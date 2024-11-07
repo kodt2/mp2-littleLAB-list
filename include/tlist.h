@@ -6,6 +6,32 @@ private:
 		T data;
 		Node* next;
 	};
+	class iterator {
+	public:
+		Node* node;
+		iterator() {
+			node = nullptr;
+		}
+		iterator(Node* n) {
+			node = n;
+		}
+		Node& operator*() {
+			return *node;
+		}
+		Node operator*() const {
+			return *node;
+		}
+		iterator& operator++() {
+			node = node->next;
+			return *this;
+		}
+		bool operator==(iterator iter) {
+			return node == iter.node;
+		}
+		bool operator!=(iterator iter) {
+			return node != iter.node;
+		}
+	};
 	Node* first;
 public:
 	Tlist() {
@@ -83,6 +109,7 @@ public:
 		delete temp;
 		first = res->first;
 		res->first = nullptr;
+		delete res;
 		return *this;
 	}
 	void print() {
@@ -112,55 +139,45 @@ public:
 
 	};//O(n)
 	void set_element(T value, int index) {
-		Node* t;
+		iterator t;
 		try {
 			t = find_ptr(index);
 		}
 		catch (...) {
 			throw  "list index out of range";
 		}
-		t->data = value;
+		t.node->data = value;
 	}
-	void insert(T value, int index) {
-		Node* prev;
-		try {
-			prev = find_ptr(index-1);
-		} 
-		catch (...) {
-			throw  "list index out of range";
-		}
+	iterator insert(T value, iterator prev) {
 		Node* temp = new Node();
 		temp->data = value;
-		temp->next = prev->next;
-		prev->next = temp;
+		temp->next = prev.node->next;
+		prev.node->next = temp;
+		return iterator(temp);
 	};
-	void insert_front(T value) {
+	iterator insert_front(T value) {
 		Node* temp = new Node();
 		temp->data = value;
 		temp->next = first;
 		first = temp;
+		return iterator(first);
 	};
-	Node* errase(int index) {
-		Node* prev;
-		try {
-			prev = find_ptr(index-1);
-		}
-		catch (...) {
-			throw  "list index out of range";
-		}
+	iterator errase(iterator prev) {
 		Node* temp = new Node();
-		temp = prev->next;
-		prev->next = temp->next;
-		delete temp;
+		temp = prev.node->next;
+		if (temp) {
+			prev.node->next = temp->next;
+			delete temp;
+		}
 		return first;
 	};
-	Node* errase_front() {
+	iterator errase_front() {
 		Node* temp = first;
 		first = first->next;
 		delete temp;
-		return first;
+		return iterator(first);
 	};
-	Node* find(T value) {
+	iterator find(T value) {
 		Node* current = first;
 		Node* res = nullptr;
 		while (current != nullptr) {
@@ -169,9 +186,9 @@ public:
 			}
 			current = current->next;
 		}
-		return res;
+		return iterator(res);
 	};//O(n)
-	Node* find_ptr(int index) {
+	iterator find_ptr(int index) {
 		if (index<0 || index>=this->size()) {
 			throw "list index out of range";
 		}
@@ -179,7 +196,7 @@ public:
 		for(int i=0; i<index;i++) {
 			current = current->next;
 		}
-		return current;
+		return iterator(current);
 	}
 	size_t size() {
 		size_t i = 0;
@@ -251,30 +268,11 @@ public:
 		}
 		return *res;
 	}
-	class iterator {
-	private:
-		Node* node;
-		Node* list;
-	public:
-		iterator(Node* n, Tlist l) {
-			node = n;
-			list = l;
-		}
-		Node& operator*(){
-			return *node;
-		}
-		Node operator*() const {
-			return *node;
-		}
-		iterator& operator++() {
-			node = node->next;
-			return *this;
-		}
-		bool operator==(iterator iter) {
-			return node == iter.node;
-		}
-		bool operator!=(iterator iter) {
-			return node != iter.node;
-		}
-	};
+	iterator begin() {
+		return iterator(first);
+	}
+	iterator end() {
+		return iterator(nullptr);
+	}
+
 };

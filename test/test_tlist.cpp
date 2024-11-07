@@ -113,7 +113,7 @@ TEST(Tlist, can_insert_element)
 	Tlist<int> m1(3);
 	Tlist<int> res(4);
 	res.set_element(100, 3);
-	m1.insert(100, 3);
+	m1.insert(100, m1.find_ptr(2));
 	EXPECT_EQ(true, m1==res);
 }
 
@@ -130,7 +130,7 @@ TEST(Tlist, can_erraze_element)
 {
 	Tlist<int> m1(3);
 	Tlist<int> res(2);
-	m1.errase(2);
+	m1.errase(m1.find_ptr(1));
 	EXPECT_EQ(res, m1);
 }
 
