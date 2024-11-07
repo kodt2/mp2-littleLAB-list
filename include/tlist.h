@@ -38,7 +38,7 @@ public:
 		first = nullptr;
 	};
 	Tlist(int n, T deflt = T()) {
-		if (n < 0) {
+		if (n <= 0) {
 			throw "eogts";
 		}
 		Node* temp = new Node();

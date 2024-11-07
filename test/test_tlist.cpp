@@ -163,3 +163,28 @@ TEST(Tlist, can_merge_sorted_lists_and_output_list_also_sorted)
 	m3 = m1.merge_sorted_lists(m2);
 	EXPECT_EQ(m3, res);
 }
+TEST(Tlist, can_merge_list_and_null_list)
+{
+	int sz1 = 5;
+	Tlist<int> m1(sz1), m2, res(sz1), m3;
+	m1[0] = 0;
+	m1[1] = 2;
+	m1[2] = 3;
+	m1[3] = 5;
+	m1[4] = 10000;
+	res[0] = 0;
+	res[1] = 2;
+	res[2] = 3;
+	res[3] = 5;
+	res[4] = 10000;
+	m3 = m1.merge_sorted_lists(m2);
+	EXPECT_EQ(m3, res);
+}
+TEST(Tlist, can_get_begin_iterator) {
+	Tlist<float> l;
+	ASSERT_NO_THROW(l.begin());
+}
+TEST(Tlist, can_get_end_iterator) {
+	Tlist<float> l;
+	ASSERT_NO_THROW(l.end());
+}
