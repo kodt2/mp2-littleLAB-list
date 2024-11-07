@@ -251,4 +251,30 @@ public:
 		}
 		return *res;
 	}
+	class iterator {
+	private:
+		Node* node;
+		Node* list;
+	public:
+		iterator(Node* n, Tlist l) {
+			node = n;
+			list = l;
+		}
+		Node& operator*(){
+			return *node;
+		}
+		Node operator*() const {
+			return *node;
+		}
+		iterator& operator++() {
+			node = node->next;
+			return *this;
+		}
+		bool operator==(iterator iter) {
+			return node == iter.node;
+		}
+		bool operator!=(iterator iter) {
+			return node != iter.node;
+		}
+	};
 };
