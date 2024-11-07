@@ -160,7 +160,7 @@ TEST(Tlist, can_merge_sorted_lists_and_output_list_also_sorted)
 	res[4] = 5;
 	res[5] = 10000;
 	res[6] = 100000;
-	m3 = m1.merge_sorted_lists(m2);
+	m3.replace(m1.merge_sorted_lists(m2));
 	EXPECT_EQ(m3, res);
 }
 TEST(Tlist, can_merge_list_and_null_list)
