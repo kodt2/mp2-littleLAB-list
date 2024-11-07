@@ -193,19 +193,62 @@ public:
 	};
 
 	Tlist& merge_sorted_lists(Tlist& list) {
-		if (first == nullptr) {
-			return list;
+		Node* curr1 = first;
+		Node* curr2 = list.first;
+
+		Tlist* res = new Tlist();
+		Node* curr;
+		if (curr1->data < curr2->data)
+		{
+			Node* temp = new Node();
+			temp->data = curr1->data;
+			res->first = temp;
+			curr = temp;
+			curr1 = curr1->next;
 		}
-		if (list->first == nullptr) {
-			return *this;
+		else
+		{
+			Node* temp = new Node();
+			temp->data = curr2->data;
+			res->first = temp;
+			curr = temp;
+			curr2 = curr2->next;
 		}
-		Node* current1 = first;
-		Node* current2 = list->first;
-		if (current1->data < current2->data) {
-			Node* temp = current1->next;
-			current1->next = current2;
-			current2 = current2->next;
-			current1->next->next = temp;
+		while (curr1 != nullptr && curr2 != nullptr)
+		{
+			if (curr1->data < curr2->data)
+			{
+				Node* temp = new Node();
+				temp->data = curr1->data;
+				curr->next = temp;
+				curr = temp;
+				curr1 = curr1->next;
+			}
+			else
+			{
+				Node* temp = new Node();
+				temp->data = curr2->data;
+				curr->next = temp;
+				curr = temp;
+				curr2 = curr2->next;
+			}
 		}
+		while (curr1 != nullptr)
+		{
+			Node* temp = new Node();
+			temp->data = curr1->data;
+			curr->next = temp;
+			curr = temp;
+			curr1 = curr1->next;
+		}
+		while (curr2 != nullptr)
+		{
+			Node* temp = new Node();
+			temp->data = curr2->data;
+			curr->next = temp;
+			curr = temp;
+			curr2 = curr2->next;
+		}
+		return *res;
 	}
 };
