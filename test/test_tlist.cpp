@@ -177,7 +177,7 @@ TEST(Tlist, can_merge_list_and_null_list)
 	res[2] = 3;
 	res[3] = 5;
 	res[4] = 10000;
-	m3 = m1.merge_sorted_lists(m2);
+	m3.replace(m1.merge_sorted_lists(m2));
 	EXPECT_EQ(m3, res);
 }
 TEST(Tlist, can_get_begin_iterator) {

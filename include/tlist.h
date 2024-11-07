@@ -112,14 +112,14 @@ public:
 		delete res;
 		return *this;
 	}
-	Tlist& operator= (Node* node) {
-		if (first == node) {
+	Tlist& replace(Tlist& list) {
+		if (first == list.first) {
 			return *this;
 		}
 		Tlist* temp = new Tlist();
 		temp->first = first;
 		delete temp;
-		first = node;
+		first = list.first;
 		return *this;
 	}
 	void print() {
@@ -219,14 +219,14 @@ public:
 		return i;
 	};
 
-	Node* merge_sorted_lists(Tlist& list) {
+	Tlist& merge_sorted_lists(Tlist& list) {
 		if (list.first == nullptr) {
 			Tlist* res = new Tlist(*this);
-			return res->first;
+			return *res;
 		}
 		if (first == nullptr) {
 			Tlist* res = new Tlist(list);
-			return res->first;
+			return *res;
 		}
 		Node* curr1 = first;
 		Node* curr2 = list.first;
@@ -284,7 +284,7 @@ public:
 			curr = temp;
 			curr2 = curr2->next;
 		}
-		return res->first;
+		return *res;
 	}
 	iterator begin() {
 		return iterator(first);
