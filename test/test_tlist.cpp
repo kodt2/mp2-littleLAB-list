@@ -1,111 +1,190 @@
-#include "tmatrix.h"
+#include "tlist.h"
 
 #include <gtest.h>
 
-TEST(TDynamicMatrix, can_create_matrix_with_positive_length)
+TEST(Tlist, can_create_list_with_positive_length)
 {
-  ASSERT_NO_THROW(TDynamicMatrix<int> m(5));
+	ASSERT_NO_THROW(Tlist<int> m(5));
 }
 
-TEST(TDynamicMatrix, cant_create_too_large_matrix)
+TEST(Tlist, throws_when_create_list_with_negative_length)
 {
-  ASSERT_ANY_THROW(TDynamicMatrix<int> m(MAX_MATRIX_SIZE + 1));
+	ASSERT_ANY_THROW(Tlist<int> m(-5));
 }
 
-TEST(TDynamicMatrix, throws_when_create_matrix_with_negative_length)
+TEST(Tlist, can_create_copied_list)
 {
-  ASSERT_ANY_THROW(TDynamicMatrix<int> m(-5));
+	Tlist<int> m(5);
+	ASSERT_NO_THROW(Tlist<int> m1(m));
 }
 
-TEST(TDynamicMatrix, can_create_copied_matrix)
+TEST(Tlist, copied_list_is_equal_to_source_one)
 {
-  TDynamicMatrix<int> m(5);
-
-  ASSERT_NO_THROW(TDynamicMatrix<int> m1(m));
+	Tlist<int> m(5);
+	Tlist<int> m1(m);
+	EXPECT_EQ(m, m1);
 }
 
-TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
+TEST(Tlist, copied_list_has_its_own_memory)
 {
-  ADD_FAILURE();
+	Tlist<int> m(5);
+	Tlist<int> m1(m);
+	m1[1] = 1;
+	Tlist<int> res(5);
+	res[1] = 1;
+	EXPECT_EQ(m1, res);
 }
 
-TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
+TEST(Tlist, can_get_size)
 {
-  ADD_FAILURE();
+	int sz = 5;
+	Tlist<int> l(sz);
+	EXPECT_EQ(sz, l.size());
 }
 
-TEST(TDynamicMatrix, can_get_size)
+TEST(Tlist, can_get_element)
 {
-  ADD_FAILURE();
+	Tlist<int> m(5);
+	ASSERT_NO_THROW(m[3]);
 }
 
-TEST(TDynamicMatrix, can_set_and_get_element)
+TEST(Tlist, throws_when_get_element_with_negative_index)
 {
-  ADD_FAILURE();
+	Tlist<int> m(5);
+	ASSERT_ANY_THROW( m[-1]);
 }
 
-TEST(TDynamicMatrix, throws_when_set_element_with_negative_index)
+TEST(Tlist, throws_when_get_element_with_too_large_index)
 {
-  ADD_FAILURE();
+	Tlist<int> m(5);
+	ASSERT_ANY_THROW(m[6]);
 }
 
-TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index)
+TEST(Tlist, can_assign_matrix_to_itself)
 {
-  ADD_FAILURE();
+	Tlist<int> m(5);
+	ASSERT_NO_THROW(m = m);
+	EXPECT_EQ(m,m);
 }
 
-TEST(TDynamicMatrix, can_assign_matrix_to_itself)
+TEST(Tlist, can_assign_matrices_of_equal_size)
 {
-  ADD_FAILURE();
+	Tlist<int> m1(5), m2(5);
+	ASSERT_NO_THROW(m1 = m2);
+	EXPECT_EQ(m1,m2);
 }
 
-TEST(TDynamicMatrix, can_assign_matrices_of_equal_size)
+TEST(Tlist, assign_operator_change_matrix_size)
 {
-  ADD_FAILURE();
+	Tlist<int> m1(5), m2(3);
+	m1 = m2;
+	EXPECT_EQ(m1.size(), 3);
 }
 
-TEST(TDynamicMatrix, assign_operator_change_matrix_size)
+TEST(Tlist, can_assign_matrices_of_different_size)
 {
-  ADD_FAILURE();
+	Tlist<int> m1(5), m2(3);
+	ASSERT_NO_THROW(m1 = m2);
+	EXPECT_EQ(m1, m2);
 }
 
-TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
+TEST(Tlist, compare_equal_matrices_return_true)
 {
-  ADD_FAILURE();
+	Tlist<int> m1(5), m2(5);
+	m1[0] = 100;
+	m2[0] = 100;
+	EXPECT_EQ(true, m1==m2);
 }
 
-TEST(TDynamicMatrix, compare_equal_matrices_return_true)
+TEST(Tlist, compare_matrix_with_itself_return_true)
 {
-  ADD_FAILURE();
+	Tlist<int> m1(5);
+	EXPECT_EQ(true, m1 == m1);
 }
 
-TEST(TDynamicMatrix, compare_matrix_with_itself_return_true)
+TEST(Tlist, matrices_with_different_size_are_not_equal)
 {
-  ADD_FAILURE();
+	Tlist<int> m1(5), m2(3);
+	EXPECT_EQ(false, m1 == m2);
 }
 
-TEST(TDynamicMatrix, matrices_with_different_size_are_not_equal)
+TEST(Tlist, can_insert_element)
 {
-  ADD_FAILURE();
+	Tlist<int> m1(3);
+	Tlist<int> res(4);
+	res.set_element(100, 3);
+	m1.insert(100, m1.find_ptr(2));
+	EXPECT_EQ(true, m1==res);
 }
 
-TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
+TEST(Tlist, can_insert_front)
 {
-  ADD_FAILURE();
+	Tlist<int> m1(3);
+	Tlist<int> res(4);
+	res.set_element(100, 0);
+	m1.insert_front(100);
+	EXPECT_EQ(res, m1);
 }
 
-TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size)
+TEST(Tlist, can_erraze_element)
 {
-  ADD_FAILURE();
+	Tlist<int> m1(3);
+	Tlist<int> res(2);
+	m1.errase(m1.find_ptr(1));
+	EXPECT_EQ(res, m1);
 }
 
-TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
+TEST(Tlist, can_erraze_front)
 {
-  ADD_FAILURE();
+	Tlist<int> m1(3);
+	Tlist<int> res(2);
+	m1.errase_front();
+	EXPECT_EQ(res, m1);
 }
 
-TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
+TEST(Tlist, can_merge_sorted_lists_and_output_list_also_sorted)
 {
-  ADD_FAILURE();
+	int sz1 = 5, sz2 = 2;
+	Tlist<int> m1(sz1), m2(sz2), res(sz1 + sz2), m3(sz1+sz2);
+	m1[0] = 0;
+	m1[1] = 2;
+	m1[2] = 3;
+	m1[3] = 5;
+	m1[4] = 10000;
+	m2[0] = 1;
+	m2[1] = 100000;
+	res[0] = 0;
+	res[1] = 1;
+	res[2] = 2;
+	res[3] = 3;
+	res[4] = 5;
+	res[5] = 10000;
+	res[6] = 100000;
+	m3.replace(m1.merge_sorted_lists(m2));
+	EXPECT_EQ(m3, res);
 }
-
+TEST(Tlist, can_merge_list_and_null_list)
+{
+	int sz1 = 5;
+	Tlist<int> m1(sz1), m2, res(sz1), m3;
+	m1[0] = 0;
+	m1[1] = 2;
+	m1[2] = 3;
+	m1[3] = 5;
+	m1[4] = 10000;
+	res[0] = 0;
+	res[1] = 2;
+	res[2] = 3;
+	res[3] = 5;
+	res[4] = 10000;
+	m3.replace(m1.merge_sorted_lists(m2));
+	EXPECT_EQ(m3, res);
+}
+TEST(Tlist, can_get_begin_iterator) {
+	Tlist<float> l;
+	ASSERT_NO_THROW(l.begin());
+}
+TEST(Tlist, can_get_end_iterator) {
+	Tlist<float> l;
+	ASSERT_NO_THROW(l.end());
+}
